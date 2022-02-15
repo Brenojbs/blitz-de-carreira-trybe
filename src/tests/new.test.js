@@ -15,8 +15,8 @@ describe('3 - Sua aplicação deve ter o endpoint POST `/new`', () => {
     await frisby
       .post(`${url}/login`,
         {
-          email: 'lewishamilton@gmail.com',
-          password: '123456',
+          email: 'casadosaber@gmail.com',
+          password: '123456'
         })
       .expect('status', 200)
       .then((response) => {
