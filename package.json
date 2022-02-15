@@ -1,0 +1,38 @@
+{
+  "name": "blitz-de-carreira-trybe",
+  "version": "1.0.0",
+  "description": "Teste pratico guiado pela Trybe para nos ajudar com Feedbacks construtivos",
+  "main": "index.js",
+  "scripts": {
+    "prestart": "npx sequelize-cli db:create && npx sequelize-cli db:migrate $",
+    "start": "node index.js",
+    "drop": "npx sequelize-cli db:drop $",
+    "seed": "npx sequelize-cli db:seed:all $",
+    "dev": "nodemon .",
+    "test": "jest --runInBand",
+    "test-coverage": "jest --runInBand --coverage",
+    "debug": "nodemon index.js",
+    "lint": "eslint --no-inline-config --no-error-on-unmatched-pattern -c .eslintrc.json ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Brenojbs/blitz-de-carreira-trybe.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Brenojbs/blitz-de-carreira-trybe/issues"
+  },
+  "homepage": "https://github.com/Brenojbs/blitz-de-carreira-trybe#readme",
+  "dependencies": {
+    "body-parse": "^0.1.0",
+    "eslint": "^8.9.0",
+    "express": "^4.17.2",
+    "jest": "^27.5.1",
+    "mongodb": "^4.3.1",
+    "nodemon": "^2.0.15",
+    "sequelize": "^6.16.1",
+    "sequelize-cli": "^6.4.1"
+  }
+}
