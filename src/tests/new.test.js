@@ -35,12 +35,14 @@ describe('3 - Sua aplicação deve ter o endpoint POST `/new`', () => {
         },
       })
       .post(`${url}/new`, {
-        toDo: 'Reunião com associados'
+        name: 'Reunião com associados',
+        status: 'pendente'
       })
       .expect('status', 201)
       .then((response) => {
         const { json } = response;
-        expect(json.toDo).toBe('Reunião com associados');
+        expect(json.name).toBe('Reunião com associados')
+        expect(json.status).toBe('pendente');
       });
   });
 });
