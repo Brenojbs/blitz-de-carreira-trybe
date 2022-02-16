@@ -2,6 +2,8 @@ const frisby = require('frisby');
 const { MongoClient } = require('mongodb');
 require('dotenv').config();
 
+const mongoDbUrl = `mongodb://${process.env.HOST || 'mongodb'}:27017/to_do_list`;
+
 const url = 'http://localhost:3000';
 
 describe('5 - Sua aplicação deve ter o endpoint DELETE `/delete/:id`', () => {
@@ -18,7 +20,7 @@ describe('5 - Sua aplicação deve ter o endpoint DELETE `/delete/:id`', () => {
     await db.collection('assignment').deleteMany({});
   });
 
-  beforeEach(() => {
+  beforeEach(async () => {
     await db.collection('user').deleteMany({});
     await db.collection('assignment').deleteMany({});
     const user = {
