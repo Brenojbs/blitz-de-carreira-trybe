@@ -1,13 +1,41 @@
 const frisby = require('frisby');
-const shell = require('shelljs');
+const { MongoClient } = require('mongodb');
+require('dotenv').config();
 
 const url = 'http://localhost:3000';
 
 describe('4 - Sua aplicação deve ter o endpoint PUT `/edit/:id`', () => {
+  let connection;
+  let db;
+
+  beforeAll(async () => {
+    connection = await MongoClient.connect(mongoDbUrl, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    db = connection.db('to_do_list');
+    await db.collection('user').deleteMany({});
+    await db.collection('assignment').deleteMany({});
+  });
+
   beforeEach(() => {
-    shell.exec('npx sequelize-cli db:drop');
-    shell.exec('npx sequelize-cli db:create && npx sequelize-cli db:migrate $');
-    shell.exec('npx sequelize-cli db:seed:all $');
+    await db.collection('user').deleteMany({});
+    await db.collection('assignment').deleteMany({});
+    const user = {
+        name: 'Pedro Calabrez',
+        email: 'neurovox@gmail.com',
+        password: '123456'
+      };
+    await db.collection('user').insertOne(user);
+  });
+
+  afterEach(async () => {
+    await db.collection('user').deleteMany({});
+    await db.collection('assignment').deleteMany({});
+  });
+
+  afterAll(async () => {
+    await connection.close();
   });
 
   it('Será verificado que é possível editar um afazer com sucesso', async () => {
@@ -15,7 +43,7 @@ describe('4 - Sua aplicação deve ter o endpoint PUT `/edit/:id`', () => {
     await frisby
       .post(`${url}/login`,
         {
-          email: 'casadosaber@gmail.com',
+          email: 'neurovox@gmail.com',
           password: '123456'
         })
       .expect('status', 200)
