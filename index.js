@@ -8,6 +8,10 @@ const PORT = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
 
+app.get('/', (_request, response) => {
+  response.send();
+})
+
 app.post('/user', userController);
 app.post('/login', loginController);
 
