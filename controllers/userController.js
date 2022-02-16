@@ -1,5 +1,4 @@
 const service = require('../services/Users');
-//  aqui eu começo a criar as fuções para concluir as rotas.
 const SUCESS_200 = 200;
 const ERROR_422 = 422;
 
