@@ -6,7 +6,7 @@ const mongoDbUrl = `mongodb://${process.env.HOST || 'mongodb'}:27017/to_do_list`
 
 const url = 'http://localhost:3000';
 
-describe('1 - Sua aplicação deve ter o endpoint POST `/user`', () => {
+describe('1 - Sua aplicação deve ter o endpoint POST e GET`/user`', () => {
   let connection;
   let db;
 
@@ -16,24 +16,24 @@ describe('1 - Sua aplicação deve ter o endpoint POST `/user`', () => {
       useUnifiedTopology: true,
     });
     db = connection.db('to_do_list');
-    await db.collection('user').deleteMany({});
-    await db.collection('assignment').deleteMany({});
+    await db.collection('users').deleteMany({});
+    await db.collection('assignments').deleteMany({});
   });
 
   beforeEach(async () => {
-    await db.collection('user').deleteMany({});
-    await db.collection('assignment').deleteMany({});
+    await db.collection('users').deleteMany({});
+    await db.collection('assignments').deleteMany({});
     const user = {
         name: 'Pedro Calabrez',
         email: 'neurovox@gmail.com',
         password: '123456'
       };
-    await db.collection('user').insertOne(user);
+    await db.collection('users').insertOne(user);
   });
 
   afterEach(async () => {
-    await db.collection('user').deleteMany({});
-    await db.collection('assignment').deleteMany({});
+    await db.collection('users').deleteMany({});
+    await db.collection('assignments').deleteMany({});
   });
 
   afterAll(async () => {
@@ -52,7 +52,18 @@ describe('1 - Sua aplicação deve ter o endpoint POST `/user`', () => {
     .expect('status', 201)
     .then((response) => {
       const { json } = response;
-      expct(json.token).not.toBeNull();
+      expect(json.token).not.toBeNull();
+    });
+  });
+
+  it('Será validado que é possivel listar os usuarios com sucesso', async () => {
+
+    await frisby
+    .get(`${url}/user`, {})
+    .expect('status', 200)
+    .then((response) => {
+      const { json } = response;
+      expect(json[0].name).toBe('Pedro Calabrez');
     });
   });
 })
