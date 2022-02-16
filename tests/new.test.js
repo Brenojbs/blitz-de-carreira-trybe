@@ -16,24 +16,29 @@ describe('3 - Sua aplicação deve ter o endpoint POST `/new`', () => {
       useUnifiedTopology: true,
     });
     db = connection.db('to_do_list');
-    await db.collection('user').deleteMany({});
-    await db.collection('assignment').deleteMany({});
+    await db.collection('users').deleteMany({});
+    await db.collection('assignments').deleteMany({});
   });
 
   beforeEach(async () => {
-    await db.collection('user').deleteMany({});
-    await db.collection('assignment').deleteMany({});
+    await db.collection('users').deleteMany({});
+    await db.collection('assignments').deleteMany({});
     const user = {
         name: 'Pedro Calabrez',
         email: 'neurovox@gmail.com',
         password: '123456'
       };
-    await db.collection('user').insertOne(user);
+    await db.collection('users').insertOne(user);
+    const assignment = {
+      name: 'Limpar o quintal',
+      status: 'pronto'
+    };
+  await db.collection('assignments').insertOne(assignment);
   });
 
   afterEach(async () => {
-    await db.collection('user').deleteMany({});
-    await db.collection('assignment').deleteMany({});
+    await db.collection('users').deleteMany({});
+    await db.collection('assignments').deleteMany({});
   });
 
   afterAll(async () => {

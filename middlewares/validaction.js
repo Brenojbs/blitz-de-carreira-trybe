@@ -43,8 +43,24 @@ const validateName = (name) => {
   }
 };
 
+const validateStatus = (status) => {
+  if (!status) {
+    return {
+      message: '"status" is required',
+      code: 400,
+    };
+  }
+  if (status.length < 3) {
+    return {
+      message: '"status" length must be 6',
+      code: 400,
+    };
+  }
+};
+
 module.exports = {
   validateEmail,
   validatePassword,
   validateName,
+  validateStatus,
 };
