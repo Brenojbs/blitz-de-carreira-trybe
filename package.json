@@ -6,8 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon .",
-    "test": "jest --runInBand",
-    "test-coverage": "jest --runInBand --coverage",
+    "test": "mocha ./tests/**/*$NAME*.test.js --exit",
     "debug": "nodemon index.js",
     "lint": "eslint --no-inline-config --no-error-on-unmatched-pattern -c .eslintrc.json ."
   },
@@ -27,7 +26,6 @@
     "dotenv": "^16.0.0",
     "eslint": "^8.9.0",
     "express": "^4.17.2",
-    "jest": "^27.5.1",
     "mongodb": "^4.3.1",
     "nodemon": "^2.0.15"
   },
