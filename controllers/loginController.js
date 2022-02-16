@@ -6,7 +6,6 @@ const login = async (req, res, next) => {
   const { email, password } = req.body;
   try {
     const result = await service.login(email, password);
-    console.log(result);
 
     if (result.code) return res.status(result.code).json(result.message);
     return res.status(SUCESS_200).json(result);

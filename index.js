@@ -13,7 +13,7 @@ app.use(bodyParser.json());
 app.get('/', (_request, response) => response.send());
 
 app.get('/user', userController.getAll);
-// app.post('/user', userController);
+app.post('/user', userController.create);
 app.post('/login', loginController.login);
 
 app.listen(PORT, () => {

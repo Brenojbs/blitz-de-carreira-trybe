@@ -28,7 +28,23 @@ const validatePassword = (password) => {
   }
 };
 
+const validateName = (name) => {
+  if (!name) {
+    return {
+      message: '"name" is required',
+      code: 400,
+    };
+  }
+  if (name.length < 3) {
+    return {
+      message: '"name" length must be 6',
+      code: 400,
+    };
+  }
+};
+
 module.exports = {
   validateEmail,
   validatePassword,
+  validateName,
 };
