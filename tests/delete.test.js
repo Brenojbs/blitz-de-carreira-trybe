@@ -16,24 +16,24 @@ describe('5 - Sua aplicação deve ter o endpoint DELETE `/delete/:id`', () => {
       useUnifiedTopology: true,
     });
     db = connection.db('to_do_list');
-    await db.collection('user').deleteMany({});
-    await db.collection('assignment').deleteMany({});
+    await db.collection('users').deleteMany({});
+    await db.collection('assignments').deleteMany({});
   });
 
   beforeEach(async () => {
-    await db.collection('user').deleteMany({});
-    await db.collection('assignment').deleteMany({});
+    await db.collection('users').deleteMany({});
+    await db.collection('assignments').deleteMany({});
     const user = {
         name: 'Pedro Calabrez',
         email: 'neurovox@gmail.com',
         password: '123456'
       };
-    await db.collection('user').insertOne(user);
+    await db.collection('users').insertOne(user);
   });
 
   afterEach(async () => {
-    await db.collection('user').deleteMany({});
-    await db.collection('assignment').deleteMany({});
+    await db.collection('users').deleteMany({});
+    await db.collection('assignments').deleteMany({});
   });
 
   afterAll(async () => {
@@ -42,6 +42,8 @@ describe('5 - Sua aplicação deve ter o endpoint DELETE `/delete/:id`', () => {
 
   it('Será verificado que é possível deletado um afazer com sucesso', async () => {
     let token;
+    let resultProductId;
+
     await frisby
       .post(`${url}/login`,
         {
@@ -54,6 +56,27 @@ describe('5 - Sua aplicação deve ter o endpoint DELETE `/delete/:id`', () => {
         const result = JSON.parse(body);
         token = result.token;
       });
+      
+      await frisby
+      .setup({
+        request: {
+          headers: {
+            Authorization: token,
+            'Content-Type': 'application/json',
+          },
+        },
+      })
+      .post(`${url}/new`,
+        {
+          name: "Tarefa para editar",
+          status: "em andamento"
+        })
+      .expect('status', 201)
+      .then((response) => {
+        const { body } = response;
+        const result = JSON.parse(body);
+        resultProductId = result._id;
+      });
 
       await frisby
       .setup({
@@ -64,7 +87,7 @@ describe('5 - Sua aplicação deve ter o endpoint DELETE `/delete/:id`', () => {
           },
         },
       })
-      .delete(`${url}/delete/1`)
+      .delete(`${url}/delete/${resultProductId}`)
       .expect('status', 204);
   });
 });

@@ -34,7 +34,14 @@ const upDate = async (id, status) => {
   return result;
 };
 
+const del = async (id) => {
+  const result = await models.del(id);
+
+  return result;
+};
+
 module.exports = {
   create,
   upDate,
+  del,
 };

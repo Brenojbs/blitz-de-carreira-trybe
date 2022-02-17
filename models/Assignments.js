@@ -16,7 +16,6 @@ const upDate = async (id, status) => {
   const query = await conn.collection('assignments').findOne({ _id: ObjectId(id) });
   
   if (query) {
-    // console.log(query);
     await conn.collection('assignments').updateOne(
       { _id: ObjectId(id) },
       { $set: { status },
@@ -28,7 +27,21 @@ const upDate = async (id, status) => {
   return query;
 };
 
+const del = async (id) => {
+  const conn = await connection();
+  const query = await conn.collection('assignments').deleteOne(
+    { _id: ObjectId(id) },
+  );
+  
+  if (query) {
+    return true;
+  }
+  return query;
+};
+
+
 module.exports = {
   create,
   upDate,
+  del,
 };
