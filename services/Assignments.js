@@ -18,11 +18,23 @@ const create = async (name, status) => {
   }
 
   const result = await models.create(name, status);
-  console.log(result);
+
+  return result;
+};
+
+const upDate = async (id, status) => {
+  const loginStatus = await validateStatus(status);
+
+  if (loginStatus ==! undefined) {
+    return loginStatus;
+  }
+
+  const result = await models.upDate(id, status);
 
   return result;
 };
 
 module.exports = {
   create,
+  upDate,
 };

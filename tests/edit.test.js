@@ -16,24 +16,24 @@ describe('4 - Sua aplicação deve ter o endpoint PUT `/edit/:id`', () => {
       useUnifiedTopology: true,
     });
     db = connection.db('to_do_list');
-    await db.collection('user').deleteMany({});
-    await db.collection('assignment').deleteMany({});
+    await db.collection('users').deleteMany({});
+    await db.collection('assignments').deleteMany({});
   });
 
   beforeEach(async () => {
-    await db.collection('user').deleteMany({});
-    await db.collection('assignment').deleteMany({});
+    await db.collection('users').deleteMany({});
+    await db.collection('assignments').deleteMany({});
     const user = {
         name: 'Pedro Calabrez',
         email: 'neurovox@gmail.com',
         password: '123456'
       };
-    await db.collection('user').insertOne(user);
+    await db.collection('users').insertOne(user);
   });
 
   afterEach(async () => {
-    await db.collection('user').deleteMany({});
-    await db.collection('assignment').deleteMany({});
+    await db.collection('users').deleteMany({});
+    await db.collection('assignments').deleteMany({});
   });
 
   afterAll(async () => {
@@ -42,6 +42,8 @@ describe('4 - Sua aplicação deve ter o endpoint PUT `/edit/:id`', () => {
 
   it('Será verificado que é possível editar um afazer com sucesso', async () => {
     let token;
+    let resultProductId;
+
     await frisby
       .post(`${url}/login`,
         {
@@ -64,7 +66,28 @@ describe('4 - Sua aplicação deve ter o endpoint PUT `/edit/:id`', () => {
           },
         },
       })
-      .put(`${url}/edit/1`, {
+      .post(`${url}/new`,
+        {
+          name: "Tarefa para editar",
+          status: "em andamento"
+        })
+      .expect('status', 201)
+      .then((response) => {
+        const { body } = response;
+        const result = JSON.parse(body);
+        resultProductId = result._id;
+      });
+
+      await frisby
+      .setup({
+        request: {
+          headers: {
+            Authorization: token,
+            'Content-Type': 'application/json',
+          },
+        },
+      })
+      .put(`${url}/edit/${resultProductId}`, {
         status: 'pronto'
       })
       .expect('status', 200)
